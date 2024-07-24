@@ -1,19 +1,24 @@
 package org.itt.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.itt.constant.EmployeeAction;
 import org.itt.entity.Item;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.util.List;
 
 public class EmployeeControllerClient {
 
     private final ObjectInputStream objectInputStream;
     private final ObjectOutputStream objectOutputStream;
+    private final Gson gson;
 
     public EmployeeControllerClient(ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) {
         this.objectInputStream = objectInputStream;
         this.objectOutputStream = objectOutputStream;
+        this.gson = new Gson();
     }
 
     public void handleEmployeeTasks(int userId) {
@@ -57,7 +62,7 @@ public class EmployeeControllerClient {
                         handleUpdateProfile(bufferedReader);
                         break;
                     case GET_RECOMMENDATION_BY_PROFILE:
-                        handleGetRecommendations(userId);
+                        handleGetRecommendationByProfile(userId);
                         break;
                     case EXIT:
                         System.out.println("Exiting...");
@@ -136,39 +141,43 @@ public class EmployeeControllerClient {
     }
 
     private void handleUpdateProfile(BufferedReader bufferedReader) throws IOException, ClassNotFoundException {
-        System.out.print("Enter your food type choice: ");
+        System.out.print("Enter your food type choice:\n1.Vegetarian, 2.Non Vegetarian, 3.Eggetarian : ");
         int foodTypeChoice = Integer.parseInt(bufferedReader.readLine().trim());
         objectOutputStream.writeObject(foodTypeChoice);
 
-        System.out.print("Enter your spice level choice: ");
+        System.out.print("Enter your spice level choice: \n1.high, 2.medium, 3.low:");
         int spiceLevelChoice = Integer.parseInt(bufferedReader.readLine().trim());
         objectOutputStream.writeObject(spiceLevelChoice);
 
-        System.out.print("Enter your cuisine choice: ");
+        System.out.print("Enter your cuisine choice:\n1.north indian, 2.south indian, 3.other: ");
         int cuisineChoice = Integer.parseInt(bufferedReader.readLine().trim());
         objectOutputStream.writeObject(cuisineChoice);
 
-        System.out.print("Enter your sweet tooth choice: ");
+        System.out.print("Enter your sweet tooth choice:\n 1.true 2.false:  ");
         int sweetToothChoice = Integer.parseInt(bufferedReader.readLine().trim());
         objectOutputStream.writeObject(sweetToothChoice);
 
         handleResponse();
     }
 
-    private void handleGetRecommendations(int userId) throws IOException, ClassNotFoundException {
-        objectOutputStream.writeObject(EmployeeAction.GET_RECOMMENDATION_BY_PROFILE.ordinal());
-        objectOutputStream.writeObject(userId);
+    private void handleGetRecommendationByProfile(int userId) throws IOException, ClassNotFoundException {
+        String recommendedItemsJson = (String) objectInputStream.readObject();
+        Type itemListType = new TypeToken<List<Item>>() {
+        }.getType();
+        List<Item> recommendedItems = gson.fromJson(recommendedItemsJson, itemListType);
 
-        Object response = objectInputStream.readObject();
-        if (response instanceof List) {
-            List<Item> recommendations = (List<Item>) response;
-            System.out.println("Recommended Items:");
-            for (Item item : recommendations) {
-                System.out.println(item);
-            }
-        } else {
-            System.out.println("Failed to get recommendations: " + response);
-        }}
+        System.out.println("Recommended Items:");
+        System.out.format("%-10s%-20s%-10s%-15s%-10s%-50s%-10s%-20s%-10s%-10s%n",
+                "Item ID", "Name", "Price", "Status", "Meal Type", "Description", "Rating", "Food Type", "Spice", "Cuisine", "Sweet");
+        System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        for (Item item : recommendedItems) {
+            System.out.format("%-10d%-20s%-10.2f%-15s%-10s%-50s%-10.1f%-20s%-10s%-10s%n",
+                    item.getItemId(), item.getItemName(), item.getPrice(), item.getAvailabilityStatus(),
+                    item.getMealType(), item.getDescription(), item.getAverageRating(),
+                    item.getFoodType(), item.getSpiceLevel(), item.getCuisineType(), item.getSweet());
+        }
+    }
+
     private void handleResponse() throws IOException, ClassNotFoundException {
         String response = (String) objectInputStream.readObject();
         System.out.println(response);

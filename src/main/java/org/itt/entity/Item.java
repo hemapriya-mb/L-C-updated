@@ -1,21 +1,39 @@
 package org.itt.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class Item implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private int itemId;
     private String itemName;
     private double price;
     private String availabilityStatus;
     private String mealType;
     private String description;
+    private double averageRating;
     private String foodType;
     private String spiceLevel;
     private String cuisineType;
     private Boolean sweet;
-    private double averageRating;
 
     public Item() {
+    }
+
+    public Item(int itemId, String itemName, double price, String availabilityStatus, String mealType,
+                String description, String foodType, String spiceLevel, String cuisineType, Boolean sweet) {
+        this.itemId = itemId;
+        this.itemName = itemName;
+        this.price = price;
+        this.availabilityStatus = availabilityStatus;
+        this.mealType = mealType;
+        this.description = description;
+        this.foodType = foodType;
+        this.spiceLevel = spiceLevel;
+        this.cuisineType = cuisineType;
+        this.sweet = sweet;
     }
 
     public int getItemId() {
@@ -66,6 +84,14 @@ public class Item implements Serializable {
         this.description = description;
     }
 
+    public double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
+    }
+
     public String getFoodType() {
         return foodType;
     }
@@ -98,11 +124,20 @@ public class Item implements Serializable {
         this.sweet = sweet;
     }
 
-    public double getAverageRating() {
-        return averageRating;
-    }
-
-    public void setAverageRating(double averageRating) {
-        this.averageRating = averageRating;
+    @Override
+    public String toString() {
+        return "Item{" +
+                "itemId=" + itemId +
+                ", itemName='" + itemName + '\'' +
+                ", price=" + price +
+                ", availabilityStatus='" + availabilityStatus + '\'' +
+                ", mealType='" + mealType + '\'' +
+                ", description='" + description + '\'' +
+                ", averageRating=" + averageRating +
+                ", foodType='" + foodType + '\'' +
+                ", spiceLevel='" + spiceLevel + '\'' +
+                ", cuisineType='" + cuisineType + '\'' +
+                ", sweet=" + sweet +
+                '}';
     }
 }

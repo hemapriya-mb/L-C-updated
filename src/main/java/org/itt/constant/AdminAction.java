@@ -1,9 +1,8 @@
 package org.itt.constant;
 
-public enum AdminAction
-{
+public enum AdminAction {
     ADD_NEW_USER(1, "Add New User"),
-    GET_ITEM_LIST(2,"get all items"),
+    GET_ITEM_LIST(2, "get all items"),
     ADD_MENU_ITEM(3, "Add Menu Item"),
     UPDATE_MENU_ITEM(4, "Update Menu Item"),
     DELETE_MENU_ITEM(5, "Delete Menu Item"),

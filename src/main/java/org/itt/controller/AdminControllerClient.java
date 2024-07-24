@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.List;
 
 public class AdminControllerClient {
 
@@ -97,22 +96,22 @@ public class AdminControllerClient {
         System.out.print("Enter price: ");
         item.setPrice(Double.parseDouble(bufferedReader.readLine()));
 
-        System.out.print("Enter availability status: ");
+        System.out.print("Enter availability status(available, unavailable): ");
         item.setAvailabilityStatus(bufferedReader.readLine());
 
-        System.out.print("Enter meal type(breakfast,lunch,dinner): ");
+        System.out.print("Enter meal type(breakfast, lunch, dinner): ");
         item.setMealType(bufferedReader.readLine());
 
         System.out.print("Enter description: ");
         item.setDescription(bufferedReader.readLine());
 
-        System.out.print("Enter food type( Vegetarian,Non Vegetarian,Eggetarian): ");
+        System.out.print("Enter food type (Vegetarian, Non Vegetarian, Eggetarian): ");
         item.setFoodType(bufferedReader.readLine());
 
-        System.out.print("Enter spice level(high,medium,low): ");
+        System.out.print("Enter spice level (high, medium, low): ");
         item.setSpiceLevel(bufferedReader.readLine());
 
-        System.out.print("Enter cuisine type(north indian, south indian, other): ");
+        System.out.print("Enter cuisine type (north indian, south indian, other): ");
         item.setCuisineType(bufferedReader.readLine());
 
         System.out.print("Is it sweet? (true/false): ");
@@ -134,5 +133,4 @@ public class AdminControllerClient {
         int itemId = Integer.parseInt(bufferedReader.readLine());
         objectOutputStream.writeObject(itemId);
     }
-
 }

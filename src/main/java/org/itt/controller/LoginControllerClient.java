@@ -10,7 +10,7 @@ public class LoginControllerClient {
     private static Socket socket;
     private static ObjectOutputStream objectOutputStream;
     private static ObjectInputStream objectInputStream;
-    private static final String PORT_NUMBER =System.getenv("PORT_NUMBER");
+    private static final String PORT_NUMBER = System.getenv("PORT_NUMBER");
     private static final String HOST_NAME =System.getenv("HOST_NAME");
 
     public static void main(String[] args) {
